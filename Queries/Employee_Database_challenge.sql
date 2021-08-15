@@ -46,3 +46,23 @@ ON (e.emp_no = ti.emp_no)
 WHERE (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
 	AND (de.to_date = '9999-01-01')
 ORDER BY e.emp_no;
+
+--Create unique_titles2 table
+SELECT DISTINCT ON (rt.emp_no) rt.emp_no,
+rt.first_name,
+rt.last_name,
+rt.title,
+rt.from_date,
+rt.to_date
+
+INTO unique_titles2
+FROM retirement_titles AS rt
+WHERE (rt.to_date = '9999-01-01')
+ORDER BY rt.emp_no, rt.to_date DESC;
+
+--Create table with count of potential mentors by title
+SELECT COUNT (me.emp_no), me.title
+INTO mentor_titles
+FROM mentorship_eligibility AS me
+GROUP BY me.title
+ORDER BY COUNT(me.title) DESC;
